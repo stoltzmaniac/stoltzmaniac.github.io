@@ -61,6 +61,15 @@
             font-size: 12px;
             color: #00ff00;
         }
+        
+        /* Highlighted word styling */
+        .highlight {
+            background-color: #00ff00; /* Neon green background */
+            color: #000; /* Black text for contrast */
+            padding: 0 2px; /* Small padding for a "highlighted" look */
+            border-radius: 2px; /* Slight rounding of the edges */
+            font-weight: bold; /* Make it stand out */
+        }
 
         @keyframes matrix-fall {
             0% {
@@ -102,6 +111,7 @@
                         id="word-input"
                         class="border border-green-500 p-2 rounded flex-grow bg-black text-green-500 placeholder-green-500 focus:ring-green-500 focus:outline-none"
                         placeholder="Enter a word to track"
+                        autocomplete="off"
                     />
                     <button
                         type="submit"

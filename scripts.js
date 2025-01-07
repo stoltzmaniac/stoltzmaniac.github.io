@@ -103,18 +103,38 @@ const cleanOldHashtags = () => {
 const displayChatMessage = (text) => {
     const container = document.querySelector('#chat-container');
 
+    // Create a new div for the message
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('p-2', 'mb-2', 'rounded', 'shadow', 'chat-message');
-    messageDiv.textContent = text;
 
+    // Highlight tracked words
+    const words = text.split(/\b/); // Split text into words using word boundaries
+    const highlightedText = words
+        .map((word) => {
+            const lowerWord = word.toLowerCase();
+            if (trackedWords.includes(lowerWord)) {
+                // Wrap the tracked word with a span for styling
+                return `<span class="highlight">${word}</span>`;
+            }
+            return word; // Keep untracked words as they are
+        })
+        .join(''); // Join the words back into a single string
+
+    // Set the inner HTML of the message with highlighted words
+    messageDiv.innerHTML = highlightedText;
+
+    // Append the message to the chat container
     container.appendChild(messageDiv);
 
+    // Limit to the most recent 100 messages
     if (container.childNodes.length > MAX_CHAT_MESSAGES) {
         container.removeChild(container.firstChild);
     }
 
+    // Scroll to the bottom of the container automatically
     container.scrollTop = container.scrollHeight;
 };
+
 
 // Function to initialize the SVG chart
 const initializeHashtagChart = () => {
