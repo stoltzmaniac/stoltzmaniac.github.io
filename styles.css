@@ -1,0 +1,63 @@
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 35% 65%;
+    grid-template-rows: 100%;
+  }
+  
+  .chart-section {
+    padding: 20px;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .chart-container {
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .chart-placeholder {
+    color: #666;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  
+  .chat-section {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-left: 1px solid #333;
+  }
+  
+  .input-section {
+    padding: 10px;
+    background-color: #1e1e1e;
+  }
+  
+  #chat-output {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #1e1e1e;
+    border-top: 1px solid #333;
+  }
+  
+  .message {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #252525;
+  }
+  
+  .message span {
+    font-weight: bold;
+  }
+  
