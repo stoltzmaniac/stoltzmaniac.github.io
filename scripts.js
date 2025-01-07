@@ -104,7 +104,7 @@ const displayChatMessage = (text) => {
     const container = document.querySelector('#chat-container');
 
     const messageDiv = document.createElement('div');
-    messageDiv.classList.add('p-2', 'mb-2', 'bg-blue-100', 'rounded', 'shadow');
+    messageDiv.classList.add('p-2', 'mb-2', 'rounded', 'shadow', 'chat-message');
     messageDiv.textContent = text;
 
     container.appendChild(messageDiv);
@@ -119,16 +119,18 @@ const displayChatMessage = (text) => {
 // Function to initialize the SVG chart
 const initializeHashtagChart = () => {
     const svg = d3.select('#hashtag-chart svg');
-    svg.html(''); // Clear previous content
+
+    // Add a group element for the chart
     const chartGroup = svg.append('g').attr('transform', 'translate(150,20)');
+
+    // Add x-axis and y-axis groups
     chartGroup.append('g').attr('class', 'x-axis').attr('transform', 'translate(0,280)');
     chartGroup.append('g').attr('class', 'y-axis');
 };
 
 // Function to update the hashtag chart
 const updateHashtagChart = () => {
-    initializeHashtagChart();
-
+    // Get the top 10 hashtags
     const sortedHashtags = [...hashtagTracker.counts.entries()]
         .sort((a, b) => b[1] - a[1])
         .slice(0, 10);
@@ -136,34 +138,56 @@ const updateHashtagChart = () => {
     const labels = sortedHashtags.map(([hashtag]) => hashtag);
     const data = sortedHashtags.map(([, count]) => count);
 
+    // Set up scales
     const xScale = d3.scaleLinear().range([0, 300]).domain([0, d3.max(data) || 1]);
     const yScale = d3.scaleBand().range([0, 280]).domain(labels).padding(0.1);
 
+    // Select the SVG group for the chart
     const svg = d3.select('#hashtag-chart svg g');
 
-    svg.select('.x-axis').call(d3.axisBottom(xScale).ticks(5));
-    svg.select('.y-axis').call(d3.axisLeft(yScale));
+    // Update x-axis
+    svg.select('.x-axis')
+        .transition()
+        .duration(500)
+        .call(d3.axisBottom(xScale).ticks(5));
 
-    const bars = svg.selectAll('.bar').data(sortedHashtags);
+    // Update y-axis
+    svg.select('.y-axis')
+        .transition()
+        .duration(500)
+        .call(d3.axisLeft(yScale));
 
+    // Bind data to bars
+    const bars = svg.selectAll('.bar').data(sortedHashtags, ([hashtag]) => hashtag);
+
+    // Enter: Add new bars
     bars.enter()
         .append('rect')
         .attr('class', 'bar')
         .attr('x', 0)
         .attr('y', ([hashtag]) => yScale(hashtag))
         .attr('height', yScale.bandwidth())
-        .attr('width', 0)
-        .style('fill', 'steelblue')
+        .attr('width', 0) // Start with width 0 for animation
+        .style('fill', '#006400') // Dark green fill
+        .style('stroke', '#00ff00') // Neon green border
+        .style('stroke-width', '1px')
         .transition()
         .duration(500)
         .attr('width', ([, count]) => xScale(count));
 
+    // Update: Modify existing bars
     bars.transition()
         .duration(500)
         .attr('y', ([hashtag]) => yScale(hashtag))
+        .attr('height', yScale.bandwidth())
         .attr('width', ([, count]) => xScale(count));
 
-    bars.exit().remove();
+    // Exit: Remove bars no longer in the data
+    bars.exit()
+        .transition()
+        .duration(500)
+        .attr('width', 0) // Shrink width to 0 before removing
+        .remove();
 };
 
 // Handle form submission for tracking words
@@ -189,23 +213,28 @@ const updateTrackedWordsUI = () => {
     trackedWords.forEach((word) => {
         const wordBox = document.createElement('div');
         wordBox.classList.add(
-            'bg-blue-100',
-            'text-blue-700',
             'px-3',
             'py-1',
             'rounded',
             'flex',
             'items-center',
             'gap-2',
-            'shadow'
+            'shadow',
+            'word-box'
         );
 
         const wordText = document.createElement('span');
         wordText.textContent = word;
+        wordText.classList.add('text-green-400', 'font-bold');
 
         const closeButton = document.createElement('button');
         closeButton.textContent = '×';
-        closeButton.classList.add('text-red-500', 'hover:text-red-700', 'font-bold', 'cursor-pointer');
+        closeButton.classList.add(
+            'text-green-500',
+            'hover:text-green-400',
+            'font-bold',
+            'cursor-pointer'
+        );
         closeButton.addEventListener('click', () => {
             trackedWords = trackedWords.filter((trackedWord) => trackedWord !== word);
             updateTrackedWordsUI();
@@ -217,4 +246,8 @@ const updateTrackedWordsUI = () => {
     });
 };
 
+// Initialize the chart when the page loads
+initializeHashtagChart();
+
+// Connect WebSocket and process messages
 wsClient.connect(handleWebSocketMessage);

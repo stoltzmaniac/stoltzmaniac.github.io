@@ -3,40 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hashtag Tracker</title>
+    <title>Matrix Hashtag Tracker</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script type="module" defer src="scripts.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <style>
+        /* General Matrix Theme */
+        body {
+            background: #000; /* Black background */
+            color: #00ff00; /* Neon green text */
+            font-family: 'Courier New', Courier, monospace; /* Matrix-style font */
+        }
+
+        /* Scrollbar Styling for Chat Container */
+        #chat-container {
+            scrollbar-color: #00ff00 #000;
+            scrollbar-width: thin;
+        }
+
+        #chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #chat-container::-webkit-scrollbar-thumb {
+            background: #00ff00;
+        }
+
+        #chat-container::-webkit-scrollbar-track {
+            background: #000;
+        }
+
+        /* Chat Message Box Styling */
+        .chat-message {
+            background: #1a1a1a; /* Dark gray for differentiation */
+            color: #00ff00; /* Neon green text */
+            border: 1px solid #2a2a2a; /* Slight border for contrast */
+        }
+
+        .chat-message:hover {
+            background: #2a2a2a; /* Slightly lighter on hover for effect */
+        }
+
+        /* Word Box Styling */
+        .word-box {
+            background: #1a1a1a; /* Dark gray box */
+            border: 1px solid #00ff00; /* Neon green border */
+            color: #00ff00; /* Neon green text */
+        }
+
+        .word-box:hover {
+            background: #2a2a2a; /* Slightly lighter dark gray on hover */
+        }
+
+        /* Matrix Animation Effect (Optional, for decorative purposes) */
+        .matrix-code {
+            animation: matrix-fall 2s infinite linear;
+            font-size: 12px;
+            color: #00ff00;
+        }
+
+        @keyframes matrix-fall {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
+<body>
     <div id="page-container" class="p-5 h-screen box-border flex">
         <!-- Chat Container -->
-        <div id="chat-container" class="w-1/3 h-full p-4 overflow-y-auto bg-white shadow-md border-r">
-            <h2 class="text-lg font-semibold mb-4">Tracked Messages</h2>
+        <div id="chat-container" class="w-1/3 h-full p-4 overflow-y-auto bg-black shadow-md border-r border-green-500">
+            <h2 class="text-lg font-semibold mb-4 text-green-400">Tracked Messages</h2>
         </div>
 
         <!-- Right Panel -->
         <div class="w-2/3 h-full flex flex-col">
             <!-- Hashtag Chart -->
-            <div id="hashtag-chart" class="h-3/4 bg-white shadow-md border p-4">
-                <h2 class="text-lg font-semibold mb-4">Top Trending Hashtags (5 Minutes)</h2>
+            <div id="hashtag-chart" class="h-3/4 bg-black shadow-md border border-green-500 p-4">
+                <h2 class="text-lg font-semibold mb-4 text-green-400">Top Trending Hashtags (5 Minutes)</h2>
                 <!-- SVG Placeholder -->
                 <svg class="w-full h-full"></svg>
             </div>
 
             <!-- Word Tracker Form -->
-            <div id="word-tracker" class="h-1/4 bg-white shadow-md border p-4 flex flex-col">
-                <h2 class="text-lg font-semibold mb-4">Track Specific Words</h2>
+            <div id="word-tracker" class="h-1/4 bg-black shadow-md border border-green-500 p-4 flex flex-col">
+                <h2 class="text-lg font-semibold mb-4 text-green-400">Track Specific Words</h2>
                 <form id="word-tracker-form" class="flex space-x-4 mb-4">
                     <input
                         type="text"
                         id="word-input"
-                        class="border border-gray-300 p-2 rounded flex-grow"
+                        class="border border-green-500 p-2 rounded flex-grow bg-black text-green-500 placeholder-green-500 focus:ring-green-500 focus:outline-none"
                         placeholder="Enter a word to track"
                     />
                     <button
                         type="submit"
-                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                        class="bg-green-500 text-black px-4 py-2 rounded hover:bg-green-600"
                     >
                         Add
                     </button>
