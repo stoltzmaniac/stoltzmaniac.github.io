@@ -5,6 +5,7 @@ const startButton = document.getElementById("start-button");
 const clearButton = document.getElementById("clear-button");
 const ctx1 = document.getElementById("letter-frequency-chart").getContext("2d");
 const ctx2 = document.getElementById("hashtag-comparison-chart").getContext("2d");
+const ctx3 = document.getElementById("hashtag-donut-chart").getContext("2d");
 
 let websocket = null;
 let filterHashtags = [];
@@ -77,6 +78,24 @@ const hashtagComparisonChart = new Chart(ctx2, {
   },
 });
 
+// Create Chart.js donut chart (Chart 3)
+const hashtagDonutChart = new Chart(ctx3, {
+  type: "doughnut",
+  data: {
+    labels: [],
+    datasets: [{
+      data: [],
+      backgroundColor: [],
+    }],
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: "top", labels: { color: "#e0e0e0" } },
+    },
+  },
+});
+
 function updateCharts(changedLetters) {
   // Update Letter Frequency Chart
   letterFrequencyChart.data.datasets[0].data = Object.values(cumulativeFrequency);
@@ -98,6 +117,14 @@ function updateCharts(changedLetters) {
     }
   });
   hashtagComparisonChart.update();
+
+  // Update Hashtag Donut Chart (Chart 3)
+  const cumulativeTotals = filterHashtags.map(ht => hashtagCounts[ht].reduce((a, b) => a + b, 0));
+  const totalSum = cumulativeTotals.reduce((a, b) => a + b, 0);
+  hashtagDonutChart.data.labels = filterHashtags;
+  hashtagDonutChart.data.datasets[0].data = cumulativeTotals.map(ct => ((ct / totalSum) * 100).toFixed(2));
+  hashtagDonutChart.data.datasets[0].backgroundColor = filterHashtags.map((_, i) => `hsl(${(i * 60) % 360}, 100%, 50%)`);
+  hashtagDonutChart.update();
 }
 
 function handleTimeInterval() {
