@@ -1,0 +1,9 @@
+title: My Jekyll Blog
+description: A blog powered by Jekyll and GitHub Pages
+baseurl: "" # Keep this blank for user/organization site
+url: "https://<your-github-username>.github.io"
+
+theme: minima
+
+plugins:
+  - jekyll-feed
