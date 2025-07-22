@@ -6,7 +6,7 @@ baseurl: ""                # leave empty for user.github.io
 url: "https://stoltzmaniac.github.io"
 
 # Theme & pagination
-theme: jekyll-theme-hyde
+theme: minima
 paginate: 5                # posts per page
 
 # Optional: enable future posts if you like drafts published later
