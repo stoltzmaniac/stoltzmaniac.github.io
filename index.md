@@ -1,6 +1,5 @@
 ---
 layout: home
-limit: 10
-show_excerpts: true
-entries_layout: list
 ---
+
+Welcome to my blog! Here you’ll find posts on…  
